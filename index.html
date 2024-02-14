@@ -923,20 +923,24 @@ https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js
 
                 initializeSolarPanels();
                 function updateFromBuildingSection() {
-                    if (configId === undefined && buildingInsights) {
-                        defaultPanelCapacity =
-                            buildingInsights.solarPotential.panelCapacityWatts;
-                        defaultPanelCapacityWatts = defaultPanelCapacity;
-                        solarPanelConfigs = buildingInsights.solarPotential.solarPanelConfigs;
-                        panelCapacityRatio = panelCapacityWattsInput / defaultPanelCapacity;
-                        configId = findSolarConfig(
-                            buildingInsights.solarPotential.solarPanelConfigs,
-                            yearlyKwhEnergyConsumption,
-                            panelCapacityRatio,
-                            dcToAcDerateInput
-                        );
+                    if ((configId === undefined) && buildingInsights) {
+                        try {
+                            defaultPanelCapacity =
+                                buildingInsights.solarPotential.panelCapacityWatts;
+                            defaultPanelCapacityWatts = defaultPanelCapacity;
+                            solarPanelConfigs = buildingInsights.solarPotential.solarPanelConfigs;
+                            panelCapacityRatio = panelCapacityWattsInput / defaultPanelCapacity;
+                            configId = findSolarConfig(
+                                buildingInsights.solarPotential.solarPanelConfigs,
+                                yearlyKwhEnergyConsumption,
+                                panelCapacityRatio,
+                                dcToAcDerateInput
+                            );
+                        } catch (error) {
+                            console.log('error:', error);
+                        }
                     }
-
+                    panelCapacityRatio = panelCapacityWattsInput / defaultPanelCapacity;
                     panelConfig = buildingInsights.solarPotential.solarPanelConfigs[configId];
                     solarPotential = buildingInsights.solarPotential;
                     palette = createPalette(panelsPalette).map(rgbToColor);
