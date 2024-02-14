@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- bootstrap icon  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" />
+    <link href="
+https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css
+" rel="stylesheet">
+    <title>Solar API Interface-app</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Poppins, sans-serif;
+        }
+
+        :root {
+            --bs-accordion-active-color: #274cf3 !important;
+            --bs-primary-rgb: #274cf3 !important;
+        }
+
+        svg {
+            filter: brightness(0) saturate(100%) invert(40%) sepia(83%) saturate(2955%) hue-rotate(217deg) brightness(101%) contrast(103%);
+        }
+
+        .row {
+            --bs-gutter-x: none;
+        }
+
+        .color-purple {
+            color: #274cf3;
+        }
+
+        .vr {
+            font-size: 10px;
+            border: 1px solid #274cf3;
+        }
+
+        hr {
+            padding: 10px;
+            border-top: 1px solid #000000;
+        }
+
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl,
+        .container-xxl {
+            max-width: 100%;
+        }
+
+        /* left side Papers  */
+        .right-build-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 0;
+        }
+
+        .right-info-row b {
+            color: #625b71;
+            font-size: 15px;
+        }
+
+        .right-info-row .bi,
+        .right-info-row svg {
+            color: #6260a3;
+            /* font-size: 18px; */
+            width: 20px;
+        }
+
+        .nav-pills {
+            width: 300px;
+            height: 100px;
+        }
+
+        .tab-content {
+            /* width: 100%; */
+        }
+
+        .tab-pane {
+            width: 500px;
+            height: 300px;
+            overflow: auto
+        }
+
+        svg path {
+            fill: #6260a3;
+        }
+
+        /* Right Side Bar  */
+        .topbar {
+            width: 100%;
+            height: 300px;
+            overflow: auto;
+            background-color: #fafafa;
+            padding: 20px;
+            box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* seacrh bar  */
+        .form-control {
+            padding-left: 2.375rem;
+            background: #ffffff;
+            border: 1px solid #274cf3;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            background: #ffffff;
+        }
+
+        .distinct {
+            background-color: #e7e0ec;
+            color: #80747e;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .two-dis-link {
+            text-decoration: none;
+            color: #274cf3;
+            /* 6750A4 */
+        }
+
+        /* accordion  */
+        .accordion-sub-heading {
+            font-size: 12px;
+            color: #af969d;
+            margin: 0px 0 10px 50px;
+            z-index: 5;
+            position: relative;
+        }
+
+        .accordion-button:hover {
+            background-color: none;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: none !important;
+            color: none;
+        }
+
+        .accordion-body.building {
+            font-size: 12px;
+        }
+
+        .building-para {
+            font-size: 12px;
+            color: #79747e;
+        }
+
+        /* ========== range theme and appearance ============ */
+        input[type='range'] {
+            font-size: 1.5rem;
+            width: 12.5em;
+        }
+
+        .omrs-input-underlined>input,
+        .omrs-input-filled>input {
+            border-color: #5171ff !important;
+        }
+
+        input[type='range'] {
+            color: #5171ff;
+            --thumb-height: 1.125em;
+            --track-height: 0.125em;
+            --track-color: rgba(0, 0, 0, 0.2);
+            --brightness-hover: 180%;
+            --brightness-down: 80%;
+            --clip-edges: 0.125em;
+        }
+
+        input[type='range'] {
+            position: relative;
+            background: #fff0;
+            overflow: hidden;
+        }
+
+        input[type='range']:active {
+            cursor: grabbing;
+        }
+
+        input[type='range'],
+        input[type='range']::-webkit-slider-runnable-track,
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            transition: all ease 100ms;
+            height: var(--thumb-height);
+        }
+
+        input[type='range']::-webkit-slider-thumb {
+            --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
+            --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+            --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
+            --clip-further: calc(100% + 1px);
+            --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0 100vmax currentColor;
+
+            width: var(--thumb-width, var(--thumb-height));
+            background: linear-gradient(currentColor 0 0) scroll no-repeat left center / 50% calc(var(--track-height) + 1px);
+            background-color: currentColor;
+            box-shadow: var(--box-fill);
+            border-radius: var(--thumb-width, var(--thumb-height));
+
+            filter: brightness(100%);
+            clip-path: polygon(100% -1px,
+                    var(--clip-edges) -1px,
+                    0 var(--clip-top),
+                    -100vmax var(--clip-top),
+                    -100vmax var(--clip-bottom),
+                    0 var(--clip-bottom),
+                    var(--clip-edges) 100%,
+                    var(--clip-further) var(--clip-further));
+        }
+
+        input[type='range']::-webkit-slider-thumb {
+            --box-fill: unset !important;
+        }
+
+        input[type='range']::-webkit-slider-runnable-track {
+            background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center / 100% calc(var(--track-height) + 1px);
+        }
+
+        /*================== Number label input ============ */
+        div.omrs-input-group {
+            position: relative;
+            width: 20.4375rem;
+        }
+
+        label.omrs-input-filled {
+            width: 100%;
+        }
+
+        /* Input*/
+        .omrs-input-underlined>input,
+        .omrs-input-filled>input {
+            /* 	border: none; */
+            /* 	border-bottom: 0.125rem solid var(--omrs-color-ink-medium-contrast); */
+            border: 1px solid #575757;
+            width: 100%;
+            height: 3rem;
+            font-size: 16px;
+            padding-left: 2.5rem;
+            line-height: 100%;
+            padding-top: 0.525rem;
+            padding-bottom: 0.525rem;
+        }
+
+        /* .omrs-input-underlined > input:focus,
+  .omrs-input-filled > input:focus {
+      outline: none;
+  } */
+
+        /* in input label  */
+        .omrs-input-underlined>.omrs-input-label,
+        .omrs-input-filled>.omrs-input-label {
+            position: absolute;
+            top: 0.725rem;
+            left: 50px;
+            line-height: 147.6%;
+            color: var(--omrs-color-ink-medium-contrast);
+            transition: top 0.2s;
+        }
+
+        /* upper label */
+        .omrs-input-underlined>input:focus+.omrs-input-label,
+        .omrs-input-underlined>input:valid+.omrs-input-label,
+        .omrs-input-filled>input:focus+.omrs-input-label,
+        .omrs-input-filled>input:valid+.omrs-input-label {
+            top: -10px;
+            left: 20px;
+            color: #274cf3;
+            padding: 0 5px;
+            background-color: white;
+            font-size: 0.9375rem;
+            margin-bottom: 32px;
+        }
+
+        /* ========Switch input ========== */
+        .form-check-input {
+            transform: scale(1.5);
+        }
+
+        /* =======Footer============== */
+        /* .footer {
+  margin-top: -80px;
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+} */
+
+        .footer {
+            width: 400px;
+            height: 40px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            position: absolute;
+            top: 90vh;
+            right: 30vw;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top bar  -->
+        <div>
+            <header class="topbar">
+                <!-- seacrh bar  -->
+                <div class="search-area">
+                    <div class="has-search">
+
+                        <input type="text" id="search-input" class="form-control" placeholder="Enter your Address..." />
+                        <!-- <input id="autoplace-input"></input> -->
+                    </div>
+                </div>
+
+                <!-- Accordion -->
+                <!-- <div class="accordion accordion-flush mt-3" id="accordions">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordions">
+                            <div class="accordion-body">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree">
+                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="me-1">
+                                    <title>cash-multiple</title>
+                                    <path
+                                        d="M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z" />
+                                </svg>
+                                <span style="margin-left: 10px; font-weight: 500;">Solar Potential Analysis</span>
+                            </button>
+
+                        </h2>
+                        <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordions">
+                            <div class="accordion-body">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="row">
+                    <!-- Tabs -->
+                    <div id="tabs" class="d-flex mt-3 col-8">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id=" building-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-building" type="button" role="tab"
+                                    aria-controls="pills-building" aria-selected="trye">Building Insights
+                                    Endpoint</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link " id="solar-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-solar" type="button" role="tab" aria-controls="pills-solar"
+                                    aria-selected="false">Solar Potential
+                                    Analysis</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade" id="pills-building" role="tabpanel"
+                                aria-labelledby="building-tab">
+                                <div>
+                                    <p class="building-para">
+                                        <b class="fw-bold"> Building Insights endpoint</b>
+                                        provides data on the location, dimensions & solar
+                                        potential of a building.
+                                    </p>
+                                    <div class="row">
+                                        <div
+                                            style="color: #222222; font-size: 16px; font-weight: 600; font-family: 'Poppins';">
+                                            Panels Count
+                                        </div>
+                                        <div id="panel-count" style="font-family: 'Poppins'; font-size: 16px;">0 Panels
+                                        </div>
+                                        <!-- Range input  -->
+                                        <div class="ms-2">
+                                            <input type="range" min="1" max="100" value="0" class="slider"
+                                                id="panels-count-slider" />
+                                        </div>
+                                        <!-- Number Input -->
+                                        <form style="padding-bottom: 20px;">
+                                            <div class="form-group mt-4">
+                                                <label for="panel-capacity" class="omrs-input-filled">Panel
+                                                    Capacity</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i
+                                                            class="bi bi-lightning"></i></span>
+                                                    <input type="number" id="panel-capacity" class="form-control"
+                                                        value="250" required />
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- switch  input-->
+                                        <div class="form-check form-switch ms-3">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked" checked />
+                                            <label class="form-check-label ms-2" for="flexSwitchCheckChecked">Solar
+                                                Panels</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="pills-solar" role="tabpanel" aria-labelledby="solar-tab">
+                                <form class="">
+                                    <!-- Bill input  -->
+                                    <div class="form-group">
+                                        <label for="bill-input">Monthly average energy bill</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                            <input type="number" id="bill-input" class="form-control" value="300"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <!--Panel Count Range input  -->
+                                    <div class="row mt-2"
+                                        style="padding-top: 10px; display: flex; align-items: center;">
+                                        <div id="panels-count-9"
+                                            style="color: #222222; font-size: 16px; font-weight: 600; font-family: 'Poppins';">
+                                            Panels Count
+                                        </div>
+                                        <div id="panel-count-2" style="font-family: 'Poppins'; font-size: 16px;">0
+                                            Panels</div>
+                                        <!-- Range input  -->
+                                        <div class="ms-2">
+                                            <input type="range" min="1" max="100" value="0" class="slider"
+                                                id="panels-count-slider-2" />
+                                        </div>
+                                    </div>
+                                    <!-- Energy cost input -->
+                                    <div class="form-group mt-4">
+                                        <label for="energy-cost-input">Energy Cost Per kWh</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                            <input type="number" id="energy-cost-input" class="form-control"
+                                                value="0.31" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Solar incentive -->
+                                    <div class="form-group mt-4">
+                                        <label for="solar-incentive-input">Solar incentives</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                            <input type="number" id="solar-incentive-input" class="form-control"
+                                                value="7000" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Installation cost per watt -->
+                                    <div class="form-group mt-4">
+                                        <label for="installation-cost-input">Installation cost per Watt</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                            <input type="number" id="installation-cost-input" class="form-control"
+                                                value="4.00" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Panel capacity per watt -->
+                                    <div class="form-group mt-4">
+                                        <label for="panel-capacity-watt">Panel Capacity per Watt</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-lightning"></i></span>
+                                            <input type="number" id="panel-capacity-watt" class="form-control"
+                                                value="250" required>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-items-start col-4 d-flex flex-column col-4">
+
+                        <!-- switch  input-->
+                        <div class="form-check form-switch ms-3" style=" padding-top: 10px;">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isShowOverlays" checked />
+                            <label class="form-check-label ms-2" for="isShowOverlays" style="font-size: 14px;">Show Data
+                                Layers</label>
+                        </div>
+                        <!-- download data button-->
+                        <div class="d-flex justify-content-end mt-5">
+                            <button style=" padding-left: 20px; padding-right: 20px; font-size: 14px;" id="download-btn"
+                                id="download-btn" class="btn btn-outline-primary px-3 py-2">Get Quotation</button>
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+        </div>
+        <div>
+            <!-- first side  -->
+            <div class="w-100 position-relative">
+                <div id="map" class="w-100" style="height: 100vh;"></div>
+                <div class="" style="position: absolute; top: 0; width: 350px;right: 10px;">
+                    <!-- first Box  -->
+                    <div class="" id="box" style="display: none; margin-left: 20px; margin-top: 20px;">
+                        <!-- build first section -->
+                        <div class="right-build-box px-2 mt-2" style="padding-top: 20px; padding-bottom: 20px;">
+                            <div class="text-center">
+                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="me-1">
+                                    <title>home-outline</title>
+                                    <path
+                                        d="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22" />
+                                </svg>
+                                <span style="font-family: 'Poppins'; font-weight: 700; font-size: 16px;"> Building
+                                    Insights</span>
+                                <div class="d-flex justify-content-center">
+                                    <hr width="100%" />
+                                </div>
+                            </div>
+                            <div class="row right-info-row" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>brightness-5</title>
+                                            <path
+                                                d="M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z" />
+                                        </svg>
+                                        Annual Sunshine</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 wb_sunny" style="font-size: 14px;">0 <span
+                                        style="font-size: 14px;">hr</span></div>
+                            </div>
+                            <div class="row right-info-row mt-2" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>set-square</title>
+                                            <path
+                                                d="M17.7 17.7L16.6 18.8L15.9 18L17 17L15 15L14 16.1L13.3 15.4L14.4 14.3L12.5 12.4L11.4 13.5L10.7 12.8L11.8 11.7L9.8 9.8L8.7 10.9L8 10.2L9 9L7.1 7.1L6 8.1L5.3 7.4L6.4 6.3L4 4V20H20L17.7 17.7M7 17V11.2L12.8 17H7Z" />
+                                        </svg>
+                                        Roof Area</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 square_foot" style="font-size: 14px;">0 <span
+                                        style="font-size: 14px;">hr</span></div>
+                            </div>
+                            <div class="row right-info-row mt-2" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>solar-power-variant-outline</title>
+                                            <path
+                                                d="M20 12H4L2 22H22L20 12M18.36 14L18.76 16H13V14H18.36M11 14V16H5.24L5.64 14H11M4.84 18H11V20H4.44L4.84 18M13 20V18H19.16L19.56 20H13M11 8H13V11H11V8M15.76 7.21L17.18 5.79L19.3 7.91L17.89 9.33L15.76 7.21M4.71 7.91L6.83 5.79L8.24 7.21L6.12 9.33L4.71 7.91M3 2H6V4H3V2M18 2H21V4H18V2M12 7C14.76 7 17 4.76 17 2H15C15 3.65 13.65 5 12 5S9 3.65 9 2H7C7 4.76 9.24 7 12 7Z" />
+                                        </svg>
+                                        Max Panel Count</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 solar_power" style="font-size: 14px;">0 <span
+                                        style="font-size: 14px;">hr</span></div>
+                            </div>
+                            <div class="row right-info-row mt-2">
+                                <!--<div class="col-lg-6">
+                                    <b class="fw-bold">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>molecule-co2</title>
+                                            <path
+                                                d="M5,7A2,2 0 0,0 3,9V15A2,2 0 0,0 5,17H8V15H5V9H8V7H5M11,7A2,2 0 0,0 9,9V15A2,2 0 0,0 11,17H13A2,2 0 0,0 15,15V9A2,2 0 0,0 13,7H11M11,9H13V15H11V9M16,10.5V12H19V13.5H17.5A1.5,1.5 0 0,0 16,15V18H20.5V16.5H17.5V15H19A1.5,1.5 0 0,0 20.5,13.5V12A1.5,1.5 0 0,0 19,10.5H16Z" />
+                                        </svg>
+                                        CO₂ savings</b>
+                                </div>-->
+                                <!--<div class="col-lg-6 text-end pe-2 co2">0 <span>hr</span></div>-->
+                            </div>
+                        </div>
+
+                        <!-- build second section -->
+                        <div class="right-build-box px-2 mt-2" style="padding: 20px;">
+                            <div class="row">
+                                <!-- second section first col -->
+                                <div class="col-lg-6 text-center">
+                                    <p>Panel Count</p>
+                                    <div class="vr"></div>
+                                    <div>
+                                        <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>solar-power-variant-outline</title>
+                                            <path
+                                                d="M20 12H4L2 22H22L20 12M18.36 14L18.76 16H13V14H18.36M11 14V16H5.24L5.64 14H11M4.84 18H11V20H4.44L4.84 18M13 20V18H19.16L19.56 20H13M11 8H13V11H11V8M15.76 7.21L17.18 5.79L19.3 7.91L17.89 9.33L15.76 7.21M4.71 7.91L6.83 5.79L8.24 7.21L6.12 9.33L4.71 7.91M3 2H6V4H3V2M18 2H21V4H18V2M12 7C14.76 7 17 4.76 17 2H15C15 3.65 13.65 5 12 5S9 3.65 9 2H7C7 4.76 9.24 7 12 7Z" />
+                                        </svg>
+                                        <p class="mt-4" style="font-size: 14px">
+                                            <b class="color-purple" id="panel-count-box">0 /</b> <span
+                                                id="total-panels"> 0</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- second section second col -->
+                                <div class="col-lg-6 text-center">
+                                    <p>Yearly Energy</p>
+                                    <div class="vr"></div>
+                                    <div>
+                                        <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>meter-electric-outline</title>
+                                            <path
+                                                d="M21 11C21 6.03 16.97 2 12 2S3 6.03 3 11C3 14.92 5.5 18.24 9 19.5V22H11V19.94C11.33 20 11.66 20 12 20S12.67 20 13 19.94V22H15V19.5C18.5 18.24 21 14.92 21 11M12 18C8.14 18 5 14.86 5 11S8.14 4 12 4 19 7.14 19 11 15.86 18 12 18M8 7H16V9H8V7M12.75 10L9.75 13L11 14.25L9.75 15.5L11.25 17L14.25 14L13 12.75L14.25 11.5L12.75 10Z" />
+                                        </svg>
+                                        <p class="mt-4" style="font-size: 14px">
+                                            <b class="color-purple" id="yearly-energy">0 </b><span> KWh</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- second Box  -->
+                    <!-- style="display: none" -->
+                    <div class="" id="box2" style="display: none; margin-left: 20px; margin-top: 20px;">
+                        <!-- build fist section -->
+                        <div class="right-build-box px-2 mt-2" style="padding-top: 20px; padding-bottom: 20px;">
+                            <div class="text-center">
+                                <svg width="25px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="me-1">
+                                    <title>cash-multiple</title>
+                                    <path
+                                        d="M5,6H23V18H5V6M14,9A3,3 0 0,1 17,12A3,3 0 0,1 14,15A3,3 0 0,1 11,12A3,3 0 0,1 14,9M9,8A2,2 0 0,1 7,10V14A2,2 0 0,1 9,16H19A2,2 0 0,1 21,14V10A2,2 0 0,1 19,8H9M1,10H3V20H19V22H1V10Z" />
+                                </svg>
+                                <span style="font-family: 'Poppins'; font-weight: 700; font-size: 16px;"> Solar
+                                    Potential Analysis </span>
+                                <div class="d-flex justify-content-center">
+                                    <hr width="100%" />
+                                </div>
+                            </div>
+                            <div class="row right-info-row" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>meter-electric-outline</title>
+                                            <path
+                                                d="M21 11C21 6.03 16.97 2 12 2S3 6.03 3 11C3 14.92 5.5 18.24 9 19.5V22H11V19.94C11.33 20 11.66 20 12 20S12.67 20 13 19.94V22H15V19.5C18.5 18.24 21 14.92 21 11M12 18C8.14 18 5 14.86 5 11S8.14 4 12 4 19 7.14 19 11 15.86 18 12 18M8 7H16V9H8V7M12.75 10L9.75 13L11 14.25L9.75 15.5L11.25 17L14.25 14L13 12.75L14.25 11.5L12.75 10Z" />
+                                        </svg>
+                                        Yearly Energy</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 energy_savings_leaf" style="font-size: 14px;">0 kWh
+                                </div>
+                            </div>
+                            <div class="row right-info-row mt-2" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>speedometer</title>
+                                            <path
+                                                d="M12,16A3,3 0 0,1 9,13C9,11.88 9.61,10.9 10.5,10.39L20.21,4.77L14.68,14.35C14.18,15.33 13.17,16 12,16M12,3C13.81,3 15.5,3.5 16.97,4.32L14.87,5.53C14,5.19 13,5 12,5A8,8 0 0,0 4,13C4,15.21 4.89,17.21 6.34,18.65H6.35C6.74,19.04 6.74,19.67 6.35,20.06C5.96,20.45 5.32,20.45 4.93,20.07V20.07C3.12,18.26 2,15.76 2,13A10,10 0 0,1 12,3M22,13C22,15.76 20.88,18.26 19.07,20.07V20.07C18.68,20.45 18.05,20.45 17.66,20.06C17.27,19.67 17.27,19.04 17.66,18.65V18.65C19.11,17.2 20,15.21 20,13C20,12 19.81,11 19.46,10.1L20.67,8C21.5,9.5 22,11.18 22,13Z" />
+                                        </svg>
+                                        Installation Size</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 installation_size" style="font-size: 14px;">0 kW
+                                </div>
+                            </div>
+                            <div class="row right-info-row mt-2 d-none"
+                                style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>cash</title>
+                                            <path
+                                                d="M3,6H21V18H3V6M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M7,8A2,2 0 0,1 5,10V14A2,2 0 0,1 7,16H17A2,2 0 0,1 19,14V10A2,2 0 0,1 17,8H7Z" />
+                                        </svg>
+                                        Installation Cost</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 request_quote" style="font-size: 14px;">0</div>
+                            </div>
+                            <div class="row right-info-row mt-2" style="padding-left: 10px; padding-right: 10px;">
+                                <div class="col-lg-6">
+                                    <b style="font-family: 'Poppins'; font-size: 14px; font-weight: 400;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>fuel-cell</title>
+                                            <path
+                                                d="M6 3V5H4C2.9 5 2 5.9 2 7V17C2 18.1 2.9 19 4 19V20C4 21.1 4.9 22 6 22H7C8.1 22 9 21.1 9 20V19H15V20C15 21.1 15.9 22 17 22H18C19.1 22 20 21.1 20 20V19C21.1 19 22 18.1 22 17H11V5H8V3H6M16 3V5H13V7H22C22 5.9 21.1 5 20 5H18V3H16M7 7V11H9L6 17V13H4L7 7M13 9V11H22V9H13M13 13V15H22V13H13Z" />
+                                        </svg>
+                                        Energy Covered</b>
+                                </div>
+                                <div class="col-lg-6 text-end pe-2 energy-covered" style="font-size: 14px;">0 %</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <footer class="footer rounded-5">
+                        <!-- Range input  -->
+                        <div class="bg-white pt-2 ps-3 rounded-5">
+                            <input type="range" min="0" max="11" value="0" class="slider" id="month-range" />
+                        </div>
+                        <div class="bg-white px-3 pt-2 rounded-5">
+                            <p id="month-name">Jan</p>
+                        </div>
+                    </footer>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- ======== Scripts =============== -->
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.1/dist-browser/geotiff.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/geotiff-geokeys-to-proj4@2024.1.14/main-dist.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/proj4@2.10.0/dist/proj4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/googlemaps-js-api-loader/1.16.2/index.min.js"
+        integrity="sha512-i7Ccync/BnU1NNCIrUllJNaqJPGvEp0exup8DM8KyD1m30g0fSyg1mN8aLfCPEBXvn/kdE5869IkK3/EsLyqrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="
+      https://cdn.jsdelivr.net/npm/google-maps@4.3.3/lib/cjs/index.min.js
+      "></script> -->
+    <!-- <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMPvp62rcoIitOkkSlfIAxZzDUgL6dR84&loading=async&libraries=geometry&callback=initMap">
+        </script> -->
+    <!-- <script src="
+        https://cdn.jsdelivr.net/npm/google-charts@2.0.0/dist/googleCharts.min.js
+        "></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js
+"></script>
+    <script>
+        let googleMapsApiKey = 'AIzaSyDMPvp62rcoIitOkkSlfIAxZzDUgL6dR84';
+        let map;
+        let geometryLibrary;
+        let mapsLibrary;
+        let placesLibrary;
+        let geoLocation;
+        let place;
+        let buildingInsights; // Declare buildingInsights variable
+        let expandedSection = '';
+        let showPanels = true;
+        let monthlyAverageEnergyBillInput = 300;
+        let panelCapacityWattsInput = 250;
+        let energyCostPerKwhInput = 0.31;
+        let dcToAcDerateInput = 0.85;
+        let configId; // Declare configId variable
+        let solarPanelConfigs;
+        let panelConfig;
+        let defaultPanelCapacityWatts;
+        let installationSizeKw;
+        let installationCostTotal;
+        let installationCostPerWatt = 4.0;
+        let solarIncentives = 7000;
+        let yearlyKwhEnergyConsumption;
+        let solarPotential;
+        let palette;
+        let minEnergy;
+        let maxEnergy;
+        let defaultPanelCapacity;
+        let panelCapacityRatio;
+        let energyCovered;
+        let yearlyProductionAcKwh;
+        let isShowDataLayer = true;
+
+        let interval;
+        // $('#box2').show();
+        const spinnerHtml = `<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status">
+  <span class="sr-only"></span>
+</div></div>`;
+
+        let tabsID = '#tabs';
+        let isBuildingAccordionOpen = false;
+        let isSolarAccordionOpen = false;
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            // const defaultPlace = {
+            //   name: 'New Orleans Museum',
+            //   address: 'New Orleans Museum of Art'
+            // };
+            const defaultPlace = {
+                name: 'Rinconada Library',
+                address: '1213 Newell Rd, Palo Alto, CA 94303'
+            };
+            const zoom = 19;
+            const loader = new google.maps.plugins.loader.Loader({
+                apiKey: googleMapsApiKey
+            });
+            const libraries = {
+                geometry: loader.importLibrary('geometry'),
+                maps: loader.importLibrary('maps'),
+                places: loader.importLibrary('places')
+            };
+            geometryLibrary = await libraries.geometry;
+            mapsLibrary = await libraries.maps;
+            placesLibrary = await libraries.places;
+
+            // Get the address information for the default geoLocation.
+            const geocoder = new google.maps.Geocoder();
+            const geocoderResponse = await geocoder.geocode({
+                address: defaultPlace.address
+            });
+            const geocoderResult = geocoderResponse.results[0];
+            // Initialize the map at the desired geoLocation.
+            geoLocation = geocoderResult.geometry.location;
+            map = new mapsLibrary.Map(document.getElementById('map'), {
+                center: geoLocation,
+                zoom: zoom,
+                tilt: 0,
+                mapTypeId: 'satellite',
+                mapTypeControl: false,
+                fullscreenControl: false,
+                rotateControl: false,
+                streetViewControl: false,
+                zoomControl: false
+            });
+            onSearchChange();
+        });
+
+        // Right Sections Code
+
+        calculateYearlyKwhEnergyConsumption();
+
+        function calculateYearlyKwhEnergyConsumption() {
+            yearlyKwhEnergyConsumption =
+                (monthlyAverageEnergyBillInput / energyCostPerKwhInput) * 12;
+        }
+
+        solarPanels = [];
+        let requestSent = false;
+        let requestError;
+        let apiResponseDialog;
+
+        function BuildingInsightsSection() {
+            function initializeSolarPanels() {
+                solarPanels.map(panel => panel.setMap(null));
+                solarPanels = [];
+            }
+
+            function updateSolarPanels() {
+                solarPanels.map((panel, i) =>
+                    panel.setMap(
+                        showPanels && panelConfig && i < panelConfig.panelsCount ? map : null
+                    )
+                );
+            }
+
+            async function showSolarPotential() {
+                if (requestSent) {
+                    return;
+                }
+
+                buildingInsights = undefined;
+                requestError = undefined;
+
+                initializeSolarPanels();
+                function updateFromBuildingSection() {
+                    if (configId === undefined && buildingInsights) {
+                        defaultPanelCapacity =
+                            buildingInsights.solarPotential.panelCapacityWatts;
+                        defaultPanelCapacityWatts = defaultPanelCapacity;
+                        solarPanelConfigs = buildingInsights.solarPotential.solarPanelConfigs;
+                        panelCapacityRatio = panelCapacityWattsInput / defaultPanelCapacity;
+                        configId = findSolarConfig(
+                            buildingInsights.solarPotential.solarPanelConfigs,
+                            yearlyKwhEnergyConsumption,
+                            panelCapacityRatio,
+                            dcToAcDerateInput
+                        );
+                    }
+
+                    panelConfig = buildingInsights.solarPotential.solarPanelConfigs[configId];
+                    solarPotential = buildingInsights.solarPotential;
+                    palette = createPalette(panelsPalette).map(rgbToColor);
+                    minEnergy = solarPotential.solarPanels.slice(-1)[0].yearlyEnergyDcKwh;
+                    maxEnergy = solarPotential.solarPanels[0].yearlyEnergyDcKwh;
+                    solarPanels = solarPotential.solarPanels.map(panel => {
+                        const [w, h] = [
+                            solarPotential.panelWidthMeters / 2,
+                            solarPotential.panelHeightMeters / 2
+                        ];
+                        const points = [
+                            { x: +w, y: +h }, // top right
+                            { x: +w, y: -h }, // bottom right
+                            { x: -w, y: -h }, // bottom left
+                            { x: -w, y: +h }, // top left
+                            { x: +w, y: +h } // top right (closing the polygon)
+                        ];
+                        const orientation = panel.orientation == 'PORTRAIT' ? 90 : 0;
+                        const azimuth =
+                            solarPotential.roofSegmentStats[panel.segmentIndex].azimuthDegrees;
+                        const colorIndex = Math.round(
+                            normalize(panel.yearlyEnergyDcKwh, maxEnergy, minEnergy) * 255
+                        );
+
+                        // Compute the coordinates of each point based on the panel's center, width, height, orientation, and azimuth
+                        const polygonCoordinates = points.map(({ x, y }) =>
+                            geometryLibrary.spherical.computeOffset(
+                                {
+                                    lat: panel.center.latitude,
+                                    lng: panel.center.longitude
+                                },
+                                Math.sqrt(x * x + y * y),
+                                Math.atan2(y, x) * (180 / Math.PI) + orientation + azimuth
+                            )
+                        );
+
+                        // Create a new google.maps.Polygon instance with computed coordinates and other properties
+                        return new google.maps.Polygon({
+                            paths: polygonCoordinates,
+                            strokeColor: '#B0BEC5',
+                            strokeOpacity: 0.9,
+                            strokeWeight: 1,
+                            fillColor: palette[colorIndex],
+                            fillOpacity: 0.9
+                        });
+                    });
+                }
+                requestSent = true;
+                try {
+                    clearInterval(interval);
+                    $('.footer').hide();
+                    $('#isShowOverlays').prop('checked', true);
+                    isShowDataLayer = true;
+                    buildingInsights = await findClosestBuilding(geoLocation);
+
+                    updateFromBuildingSection(buildingInsights);
+                    updateSolarPanels();
+                    DataLayerSection(buildingInsights);
+                    $('#yearly-energy-accordion').html(
+                        `${(
+                            (panelConfig?.yearlyEnergyDcKwh || 0 * panelCapacityRatio || 0) / 1000
+                        ).toFixed(2)} MWh`
+                    );
+
+                    $('#panel-count-box').html(
+                        showNumber(
+                            buildingInsights.solarPotential.solarPanelConfigs[configId]
+                                .panelsCount
+                        ) + '/ '
+                    );
+
+                    $('#total-panels').html(showNumber(solarPanels.length));
+
+                    $('#yearly-energy,.energy_savings_leaf').html(
+                        showNumber((panelConfig?.yearlyEnergyDcKwh ?? 0) * panelCapacityRatio)
+                    );
+
+                    // $('.co2').html(
+                    //  showNumber(buildingInsights.solarPotential.carbonOffsetFactorKgPerMwh) +
+                    //   ' hr'
+                    // );
+
+                    $('.solar_power').html(
+                        showNumber(buildingInsights.solarPotential.solarPanels.length) + ' hr'
+                    );
+
+                    $('.square_foot').html(
+                        showNumber(buildingInsights.solarPotential.wholeRoofStats.areaMeters2) +
+                        ' hr'
+                    );
+
+                    $('.wb_sunny').html(
+                        showNumber(buildingInsights.solarPotential.maxSunshineHoursPerYear) +
+                        ' hr'
+                    );
+
+                    $('#panels-count-slider,#panels-count-slider-2').attr({
+                        max: buildingInsights.solarPotential.solarPanelConfigs.length - 1,
+                        min: 0,
+                        value: configId
+                    });
+
+                    $('#panel-count, #panel-count-2').html(
+                        `${buildingInsights.solarPotential.solarPanelConfigs[configId].panelsCount} panels`
+                    );
+                } catch (e) {
+                    toastr.error('No data found for this address');
+                    console.log('error: ', e);
+                    requestError = e;
+                    return;
+                } finally {
+                    requestSent = false;
+                }
+            }
+
+            showSolarPotential();
+            $('#panels-count-slider,#panels-count-slider-2').on('input', function (e) {
+                configId = e.target.value ?? 0;
+                showSolarPotential();
+            });
+
+            $('#panel-capacity').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                panelCapacityWattsInput = value;
+                showSolarPotential();
+            });
+            $('#flexSwitchCheckChecked').on('input', function (e) {
+                const value = e.target.checked ?? false;
+                showPanels = value;
+                showSolarPotential();
+            });
+        }
+
+        function DataLayerSection(_buildingInsights) {
+            let expandedSection = '';
+
+            const dataLayerOptions = {
+                none: 'No layer',
+                mask: 'Roof mask',
+                dsm: 'Digital Surface Model',
+                rgb: 'Aerial image',
+                annualFlux: 'Annual sunshine',
+                monthlyFlux: 'Monthly sunshine',
+                hourlyShade: 'Hourly shade'
+            };
+
+            const monthNames = [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ];
+
+            let dataLayersResponse;
+            let requestError;
+            let apiResponseDialog;
+            let layerId = 'monthlyFlux';
+            let layer;
+
+            let playAnimation = true;
+            let tick = 0;
+            let month = 0;
+            let day = 14;
+            let hour = 0;
+
+            let overlays = [];
+            let showRoofOnly = false;
+
+            async function setDataLayer(reset = false) {
+                if (reset) {
+                    layerId = 'monthlyFlux';
+                    dataLayersResponse = undefined;
+                    requestError = undefined;
+                    layer = undefined;
+
+                    showRoofOnly = ['annualFlux', 'monthlyFlux', 'hourlyShade'].includes(
+                        layerId
+                    );
+                    month = layerId == 'hourlyShade' ? 3 : 0;
+                    day = 14;
+                    hour = 5;
+                    playAnimation = ['monthlyFlux', 'hourlyShade'].includes(layerId);
+                } else {
+                    layerId = 'none';
+                }
+                map.setMapTypeId(layerId == 'rgb' ? 'roadmap' : 'satellite');
+                overlays.map(overlay => overlay.setMap(null));
+                if (layerId == 'none') {
+                    return;
+                }
+
+                if (!layer) {
+                    // console.log('___building insights: ', _buildingInsights.center);
+                    const center = _buildingInsights.center;
+                    const ne = _buildingInsights.boundingBox.ne;
+                    const sw = _buildingInsights.boundingBox.sw;
+                    const diameter = geometryLibrary.spherical.computeDistanceBetween(
+                        new google.maps.LatLng(ne.latitude, ne.longitude),
+                        new google.maps.LatLng(sw.latitude, sw.longitude)
+                    );
+                    const radius = Math.ceil(diameter / 2);
+                    // console.log('----', center, _buildingInsights.boundingBox);
+                    try {
+                        dataLayersResponse = await getDataLayerUrls(
+                            center,
+                            radius,
+                            googleMapsApiKey
+                        );
+                        // console.log('dataLayersResponse', dataLayersResponse);
+                    } catch (e) {
+                        toastr.error('No data found for this address');
+
+                        console.log('error', e);
+                        requestError = e;
+                        return;
+                    }
+
+                    try {
+                        layer = await getLayer(layerId, dataLayersResponse, googleMapsApiKey);
+                    } catch (e) {
+                        toastr.error('No data found for this address');
+
+                        console.log('error getting: ', e);
+                        requestError = e;
+                        return;
+                    }
+                }
+
+                const bounds = layer.bounds;
+                // console.log('Render layer:', {
+                //   layerId: layer.id,
+                //   showRoofOnly: showRoofOnly,
+                //   month: month,
+                //   day: day
+                // });
+                overlays.map(overlay => overlay.setMap(null));
+                overlays = layer.render(showRoofOnly, month, day).map(canvas => {
+                    return new google.maps.GroundOverlay(canvas.toDataURL(), bounds);
+                });
+
+                if (!['monthlyFlux', 'hourlyShade'].includes(layer.id)) {
+                    overlays[0].setMap(map);
+                }
+            }
+
+            function setOverlayOnMap(show = true) {
+                if (show) {
+                    if (layer?.id == 'monthlyFlux') {
+                        overlays.map((overlay, i) => overlay.setMap(i == month ? map : null));
+                    } else if (layer?.id == 'hourlyShade') {
+                        overlays.map((overlay, i) => overlay.setMap(i == hour ? map : null));
+                    }
+
+                    if (layer?.id == 'monthlyFlux') {
+                        if (playAnimation) {
+                            month = tick % 12;
+                        } else {
+                            tick = month;
+                        }
+                    } else if (layer?.id == 'hourlyShade') {
+                        if (playAnimation) {
+                            hour = tick % 24;
+                        } else {
+                            tick = hour;
+                        }
+                    }
+
+                    $('#month-range').val(month);
+                    $('#month-name').html(monthNames[month]);
+                }
+            }
+
+            function onSliderChange(event) {
+                const target = event.target;
+                if (layer?.id == 'monthlyFlux') {
+                    if (target.valueStart != month) {
+                        month = target.valueStart ?? 0;
+                    } else if (target.valueEnd != month) {
+                        month = target.valueEnd ?? 0;
+                    }
+                    tick = month;
+                } else if (layer?.id == 'hourlyShade') {
+                    if (target.valueStart != hour) {
+                        hour = target.valueStart ?? 0;
+                    } else if (target.valueEnd != hour) {
+                        hour = target.valueEnd ?? 0;
+                    }
+                    tick = hour;
+                }
+            }
+            if (isShowDataLayer) setDataLayer(true);
+
+            interval = setInterval(() => {
+                if (checkIsShowDataLayer()) {
+                    tick++;
+                    setOverlayOnMap();
+                    $('.footer').show();
+                } else {
+                    $('.footer').hide();
+                    setDataLayer(false);
+                }
+            }, 1000);
+
+            // setInterval(() => {
+            //   isShowDataLayer = !isShowDataLayer;
+            // }, 8000);
+        }
+
+        $('#isShowOverlays').on('input', function (e) {
+            isShowDataLayer = e.target.checked;
+        });
+
+        function checkIsShowDataLayer() {
+            return isShowDataLayer;
+        }
+
+        function createAccordionSections() {
+            $(tabsID).show();
+
+            let monthlyKwhEnergyConsumption;
+            function CalculateSolarPotential() {
+                let costChart = document.getElementById('line-chart');
+                let showAdvancedSettings = false;
+
+                // [START solar_potential_calculations]
+                // Solar configuration, from buildingInsights.solarPotential.solarPanelConfigs
+                let panelsCount =
+                    buildingInsights.solarPotential.solarPanelConfigs[configId].panelsCount;
+                let yearlyEnergyDcKwh = 12000;
+
+                // Basic settings
+                let panelCapacityWatts = 400;
+                let installationLifeSpan = 20;
+
+                // Advanced settings
+                let dcToAcDerate = 0.85;
+                let efficiencyDepreciationFactor = 0.995;
+                let costIncreaseFactor = 1.022;
+                let discountRate = 1.04;
+
+                // Solar installation
+                installationSizeKw = (panelsCount * panelCapacityWatts) / 1000;
+                if (solarPanelConfigs[configId]) {
+                    installationSizeKw =
+                        (solarPanelConfigs[configId].panelsCount * panelCapacityWattsInput) /
+                        1000;
+                }
+                installationCostTotal = installationCostPerWatt * installationSizeKw * 1000;
+
+                // Energy consumption
+                monthlyKwhEnergyConsumption =
+                    monthlyAverageEnergyBillInput / energyCostPerKwhInput;
+                yearlyKwhEnergyConsumption = monthlyKwhEnergyConsumption * 12;
+
+                // Energy produced for installation life span
+                let initialAcKwhPerYear = yearlyEnergyDcKwh * dcToAcDerate;
+                yearlyProductionAcKwh = Array.from(Array(installationLifeSpan).keys()).map(
+                    year => initialAcKwhPerYear * efficiencyDepreciationFactor ** year
+                );
+
+                // Cost with solar for installation life span
+                let yearlyUtilityBillEstimates = yearlyProductionAcKwh.map(
+                    (yearlyKwhEnergyProduced, year) => {
+                        const billEnergyKwh =
+                            yearlyKwhEnergyConsumption - yearlyKwhEnergyProduced;
+                        const billEstimate =
+                            (billEnergyKwh * energyCostPerKwhInput * costIncreaseFactor ** year) /
+                            discountRate ** year;
+                        return Math.max(billEstimate, 0); // bill cannot be negative
+                    }
+                );
+                let remainingLifetimeUtilityBill = yearlyUtilityBillEstimates.reduce(
+                    (x, y) => x + y,
+                    0
+                );
+                let totalCostWithSolar =
+                    installationCostTotal + remainingLifetimeUtilityBill - solarIncentives;
+
+                // Cost without solar for installation life span
+                let yearlyCostWithoutSolar = Array.from(
+                    Array(installationLifeSpan).keys()
+                ).map(
+                    year =>
+                        (monthlyAverageEnergyBillInput * 12 * costIncreaseFactor ** year) /
+                        discountRate ** year
+                );
+                let totalCostWithoutSolar = yearlyCostWithoutSolar.reduce(
+                    (x, y) => x + y,
+                    0
+                );
+
+                // Savings with solar for installation life span
+                let savings = totalCostWithoutSolar - totalCostWithSolar;
+
+                let breakEvenYear = -1;
+                // googleCharts.GoogleCharts.load(
+                //   () => {
+                //     // if (!document.getElementById('line-chart')) {
+                //     //   return;
+                //     // }
+                //     const year = new Date().getFullYear();
+
+                //     let costWithSolar = 0;
+                //     const cumulativeCostsWithSolar = yearlyUtilityBillEstimates.map(
+                //       (billEstimate, i) =>
+                //         (costWithSolar +=
+                //           i == 0
+                //             ? billEstimate + installationCostTotal - solarIncentives
+                //             : billEstimate)
+                //     );
+                //     let costWithoutSolar = 0;
+                //     const cumulativeCostsWithoutSolar = yearlyCostWithoutSolar.map(
+                //       cost => (costWithoutSolar += cost)
+                //     );
+                //     breakEvenYear = cumulativeCostsWithSolar.findIndex(
+                //       (costWithSolar, i) => costWithSolar <= cumulativeCostsWithoutSolar[i]
+                //     );
+
+                //     const data = google.visualization.arrayToDataTable([
+                //       ['Year', 'Solar', 'No solar'],
+                //       [year.toString(), 0, 0],
+                //       ...cumulativeCostsWithSolar.map((_, i) => [
+                //         String(year + i + 1),
+                //         cumulativeCostsWithSolar[i],
+                //         cumulativeCostsWithoutSolar[i]
+                //       ])
+                //     ]);
+
+                //     const googleCharts = google.charts;
+                //     const chart = new googleCharts.Line(costChart);
+                //     const options = googleCharts.Line.convertOptions({
+                //       title: `Cost analysis for ${installationLifeSpan} years`,
+                //       width: 350,
+                //       height: 200
+                //     });
+                //     chart.draw(data, options);
+                //   },
+                //   { packages: ['line'] }
+                // );
+                $('#cwts').html('$' + showNumber(totalCostWithoutSolar));
+                $('#cws').html('$' + showNumber(totalCostWithSolar));
+                $('#savings').html('$' + showNumber(savings));
+            }
+
+            if (geometryLibrary && map) {
+                BuildingInsightsSection();
+            }
+            function updateConfig() {
+                monthlyKwhEnergyConsumption =
+                    monthlyAverageEnergyBillInput / energyCostPerKwhInput;
+                yearlyKwhEnergyConsumption = monthlyKwhEnergyConsumption * 12;
+                panelCapacityRatio = panelCapacityWattsInput / defaultPanelCapacityWatts;
+                configId = findSolarConfig(
+                    solarPanelConfigs,
+                    yearlyKwhEnergyConsumption,
+                    panelCapacityRatio,
+                    dcToAcDerateInput
+                );
+                energyCovered = yearlyProductionAcKwh[0] / yearlyKwhEnergyConsumption;
+
+                // $('.energy_savings_leaf').html(
+                //   showNumber(
+                //     (solarPanelConfigs[configId]?.yearlyEnergyDcKwh ?? 0) *
+                //       panelCapacityRatio
+                //   ) + ' kWh'
+                // );
+
+                $('.installation_size').html(showNumber(installationSizeKw) + ' kW');
+
+                $('.request_quote').html(showMoney(installationCostTotal));
+
+                $('.energy-covered').html(
+                    Math.round(energyCovered * 100).toString() + ' %'
+                );
+            }
+
+            function getData() {
+                return [
+                    [
+                        'Address',
+                        'Panels Count',
+                        'Panel Capacity in watts',
+                        'Monthly average energy bill',
+                        'Energy Cost per kWh',
+                        'Solar Incentives',
+                        'Installation Cost Per Watt',
+                        'Yearly Energy kWh',
+                        'Annual Shine',
+                        'Roof Area',
+                        'Max Panel Count',
+                        'CO2 Savings',
+                        'Installation size',
+                        'Energy Covered'
+                    ],
+                    [
+                        place?.formatted_address,
+                        showNumber(
+                            buildingInsights.solarPotential.solarPanelConfigs[configId]
+                                .panelsCount
+                        ),
+                        panelCapacityWattsInput,
+                        monthlyAverageEnergyBillInput,
+                        energyCostPerKwhInput,
+                        solarIncentives,
+                        installationCostPerWatt,
+                        showNumber((panelConfig?.yearlyEnergyDcKwh ?? 0) * panelCapacityRatio),
+                        showNumber(buildingInsights.solarPotential.maxSunshineHoursPerYear),
+                        showNumber(buildingInsights.solarPotential.wholeRoofStats.areaMeters2),
+                        showNumber(buildingInsights.solarPotential.solarPanels.length) + ' hr',
+                        showNumber(buildingInsights.solarPotential.carbonOffsetFactorKgPerMwh),
+                        showNumber(installationSizeKw),
+                        Math.round(energyCovered * 100).toString()
+                    ]
+                ];
+            }
+            setTimeout(() => {
+                // DataLayerSection();
+                CalculateSolarPotential();
+                updateConfig();
+            }, 3000);
+
+            document
+                .getElementById('download-btn')
+                .addEventListener('click', function () {
+                    // Create a workbook
+                    var wb = XLSX.utils.book_new();
+
+                    // Create worksheet
+                    const downloadAbleData = getData();
+                    var ws = XLSX.utils.aoa_to_sheet(downloadAbleData);
+
+                    // Add worksheet to workbook
+                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+                    // Convert workbook to binary XLSX
+                    var wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' });
+
+                    function s2ab(s) {
+                        var buf = new ArrayBuffer(s.length);
+                        var view = new Uint8Array(buf);
+                        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+                        return buf;
+                    }
+
+                    // Trigger download
+                    var blob = new Blob([s2ab(wbout)], {
+                        type: 'application/octet-stream'
+                    });
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'data.xlsx';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+
+            $('#bill-input').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                monthlyAverageEnergyBillInput = value;
+                CalculateSolarPotential();
+                updateConfig();
+            });
+
+            $('#panels-count-slider-2').on('input', function (e) {
+                CalculateSolarPotential();
+                updateConfig();
+            });
+            $('#energy-cost-input').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                energyCostPerKwhInput = value;
+                CalculateSolarPotential();
+                updateConfig();
+            });
+            $('#solar-incentive-input').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                solarIncentives = value;
+                CalculateSolarPotential();
+                updateConfig();
+            });
+            $('#installation-cost-input').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                installationCostPerWatt = value;
+                CalculateSolarPotential();
+                updateConfig();
+            });
+            $('#panel-capacity-watt').on('input', function (e) {
+                const value = e.target.value ?? 0;
+                panelCapacityWattsInput = value;
+                CalculateSolarPotential();
+                updateConfig();
+            });
+        }
+
+        function onSearchChange() {
+            // $(tabsID).html(spinnerHtml);
+            let initialValue = geoLocation;
+            const searchBarElement = document.querySelector('#search-input');
+
+            // Await for the component's update completion
+            // Find the input element inside the text field component
+            const inputElement = document.querySelector('#search-input');
+
+            // Initialize the autocomplete instance
+            const autocomplete = new placesLibrary.Autocomplete(inputElement, {
+                fields: ['formatted_address', 'geometry', 'name']
+            });
+
+            // Add listener for place_changed event
+            autocomplete.addListener('place_changed', async () => {
+                // $(tabsID).html(spinnerHtml);
+                place = autocomplete.getPlace();
+                // Check if place geometry or geoLocation is not available
+                if (!place.geometry || !place.geometry.location) {
+                    searchBarElement.value = '';
+                    return;
+                }
+
+                // Adjust map center and zoom level based on place geometry
+                if (place.geometry.viewport) {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(19);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(19);
+                }
+
+                // Update location value
+                geoLocation = place.geometry.location;
+                if (geoLocation) {
+                    $(tabsID).hide();
+                    createAccordionSections();
+                }
+                if (geometryLibrary && map) {
+                    BuildingInsightsSection();
+                }
+                // Update text field value with place name or formatted address
+                if (place.name) {
+                    searchBarElement.value = place.name;
+                } else if (place.formatted_address) {
+                    searchBarElement.value = place.formatted_address;
+                }
+            });
+            if (geoLocation) {
+                $(tabsID).hide();
+                createAccordionSections();
+            }
+        }
+
+        $('.nav-link').on('show.bs.tab', function (e) {
+            switch (e.target.id) {
+                case 'building-tab':
+                    isBuildingAccordionOpen = true;
+                    $('#box').show();
+                    break;
+                case 'solar-tab':
+                    isSolarAccordionOpen = true;
+                    $('#box2').show();
+                    break;
+                default:
+                    break;
+            }
+            // Additional actions you want to perform when an accordion item is shown
+        });
+
+        $('.nav-link').on('hide.bs.tab', function (e) {
+            switch (e.target.id) {
+                case 'building-tab':
+                    $('#box').hide();
+                    break;
+                case 'solar-tab':
+                    isSolarAccordionOpen = false;
+                    $('#box2').hide();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // colors.js
+        const binaryPalette = ['212121', 'B3E5FC'];
+        const rainbowPalette = ['3949AB', '81D4FA', '66BB6A', 'FFE082', 'E53935'];
+        const ironPalette = ['00000A', '91009C', 'E64616', 'FEB400', 'FFFFF6'];
+        const sunlightPalette = ['212121', 'FFCA28'];
+        const panelsPalette = ['E8EAF6', '1A237E'];
+
+        // utils.js (Partial, as some functions require external dependencies or are complex to include directly, e.g., `fetch`)
+        function showNumber(x) {
+            return x.toLocaleString(undefined, { maximumFractionDigits: 1 });
+        }
+
+        function showMoney(amount) {
+            return `$${amount.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+        }
+
+        function findSolarConfig(
+            solarPanelConfigs,
+            yearlyKwhEnergyConsumption,
+            panelCapacityRatio,
+            dcToAcDerate
+        ) {
+            return solarPanelConfigs.findIndex(
+                config =>
+                    config.yearlyEnergyDcKwh * panelCapacityRatio * dcToAcDerate >=
+                    yearlyKwhEnergyConsumption
+            );
+        }
+
+        // visualize.js
+        function colorToRGB(color) {
+            const hex = color.startsWith('#') ? color.slice(1) : color;
+            return {
+                r: parseInt(hex.substring(0, 2), 16),
+                g: parseInt(hex.substring(2, 4), 16),
+                b: parseInt(hex.substring(4, 6), 16)
+            };
+        }
+
+        function createPalette(hexColors) {
+            const rgb = hexColors.map(colorToRGB);
+            const size = 256;
+            const step = (rgb.length - 1) / (size - 1);
+            return Array(size)
+                .fill(0)
+                .map((_, i) => {
+                    const index = i * step;
+                    const lower = Math.floor(index);
+                    const upper = Math.ceil(index);
+                    return {
+                        r: lerp(rgb[lower].r, rgb[upper].r, index - lower),
+                        g: lerp(rgb[lower].g, rgb[upper].g, index - lower),
+                        b: lerp(rgb[lower].b, rgb[upper].b, index - lower)
+                    };
+                });
+        }
+
+        function lerp(x, y, t) {
+            return x + t * (y - x);
+        }
+
+        function clamp(x, min, max) {
+            return Math.min(Math.max(x, min), max);
+        }
+
+        function normalize(x, max = 1, min = 0) {
+            const y = (x - min) / (max - min);
+            return clamp(y, 0, 1);
+        }
+
+        function renderPalette({ data, mask, colors, min, max, index }) {
+            const palette = createPalette(colors ?? ['000000', 'ffffff']);
+            const indices = data.rasters[index ?? 0]
+                .map(x => normalize(x, max ?? 1, min ?? 0))
+                .map(x => Math.round(x * (palette.length - 1)));
+            return renderRGB(
+                {
+                    ...data,
+                    rasters: [
+                        indices.map(i => palette[i].r),
+                        indices.map(i => palette[i].g),
+                        indices.map(i => palette[i].b)
+                    ]
+                },
+                mask
+            );
+        }
+
+        function renderRGB(rgb, mask) {
+            const canvas = document.createElement('canvas');
+            canvas.width = mask ? mask.width : rgb.width;
+            canvas.height = mask ? mask.height : rgb.height;
+            const dw = rgb.width / canvas.width;
+            const dh = rgb.height / canvas.height;
+            const ctx = canvas.getContext('2d');
+            const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const rgbIdx = Math.floor(y * dh) * rgb.width + Math.floor(x * dw);
+                    const maskIdx = y * canvas.width + x;
+                    const imgIdx = y * canvas.width * 4 + x * 4;
+                    img.data[imgIdx + 0] = rgb.rasters[0][rgbIdx];
+                    img.data[imgIdx + 1] = rgb.rasters[1][rgbIdx];
+                    img.data[imgIdx + 2] = rgb.rasters[2][rgbIdx];
+                    img.data[imgIdx + 3] = mask ? mask.rasters[0][maskIdx] * 255 : 255;
+                }
+            }
+            ctx.putImageData(img, 0, 0);
+            return canvas;
+        }
+
+        function rgbToColor({ r, g, b }) {
+            const f = x => {
+                const hex = Math.round(x).toString(16);
+                return hex.length == 1 ? `0${hex}` : hex;
+            };
+            return `#${f(r)}${f(g)}${f(b)}`;
+        }
+
+        // Solar API
+
+        async function findClosestBuilding(geoLocation) {
+            const args = {
+                'location.latitude': geoLocation.lat().toFixed(5),
+                'location.longitude': geoLocation.lng().toFixed(5)
+            };
+            // console.log('GET buildingInsights\n', args);
+            const params = new URLSearchParams({ ...args, key: googleMapsApiKey });
+            return fetch(
+                `https://solar.googleapis.com/v1/buildingInsights:findClosest?${params}`
+            ).then(async response => {
+                const content = await response.json();
+                if (response.status != 200) {
+                    toastr.error('No Data Found for this address');
+                    console.error('findClosestBuilding\n', content);
+                    throw content;
+                }
+                // console.log('buildingInsightsResponse', content);
+                return content;
+            });
+        }
+
+        async function getDataLayerUrls(geoLocation, radiusMeters) {
+            const args = {
+                'location.latitude': geoLocation.latitude.toFixed(5),
+                'location.longitude': geoLocation.longitude.toFixed(5),
+                radius_meters: radiusMeters.toString()
+            };
+            // console.log('GET dataLayers\n', args);
+            const params = new URLSearchParams({ ...args, key: googleMapsApiKey });
+            return fetch(`https://solar.googleapis.com/v1/dataLayers:get?${params}`).then(
+                async response => {
+                    const content = await response.json();
+                    if (response.status != 200) {
+                        toastr.error('No Data Found for this address');
+
+                        console.error('getDataLayerUrls\n', content);
+                        throw content;
+                    }
+                    // console.log('dataLayersResponse', content);
+                    return content;
+                }
+            );
+        }
+
+        async function downloadGeoTIFF(url) {
+            // console.log(`Downloading data layer: ${url}`);
+            const solarUrl = url.includes('solar.googleapis.com')
+                ? url + `&key=${googleMapsApiKey}`
+                : url;
+            const response = await fetch(solarUrl);
+            if (response.status != 200) {
+                const error = await response.json();
+                toastr.error('No Data Found for this address');
+
+                console.error(`downloadGeoTIFF failed: ${url}\n`, error);
+                throw error;
+            }
+            const arrayBuffer = await response.arrayBuffer();
+            const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
+            const image = await tiff.getImage();
+            const rasters = await image.readRasters();
+            const geoKeys = image.getGeoKeys();
+            const projObj = geokeysToProj4.toProj4(geoKeys);
+            const projection = proj4(projObj.proj4, 'WGS84');
+            const box = image.getBoundingBox();
+            const sw = projection.forward({
+                x: box[0] * projObj.coordinatesConversionParameters.x,
+                y: box[1] * projObj.coordinatesConversionParameters.y
+            });
+            const ne = projection.forward({
+                x: box[2] * projObj.coordinatesConversionParameters.x,
+                y: box[3] * projObj.coordinatesConversionParameters.y
+            });
+            return {
+                width: rasters.width,
+                height: rasters.height,
+                rasters: [...Array(rasters.length).keys()].map(i => Array.from(rasters[i])),
+                bounds: {
+                    north: ne.y,
+                    south: sw.y,
+                    east: ne.x,
+                    west: sw.x
+                }
+            };
+        }
+
+        function showLatLng(point) {
+            return `(${point.latitude.toFixed(5)}, ${point.longitude.toFixed(5)})`;
+        }
+
+        function showDate(date) {
+            return `${date.month}/${date.day}/${date.year}`;
+        }
+
+        // Layer module
+        // External module dependencies
+        // Import statements for external modules using CDN
+        // Include the necessary external module scripts in your HTML file as mentioned in the previous responses
+
+        // Layer module
+        async function getLayer(layerId, urls) {
+            const get = {
+                mask: async () => {
+                    const mask = await downloadGeoTIFF(urls.maskUrl);
+                    const colors = binaryPalette;
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        palette: {
+                            colors: colors,
+                            min: 'No roof',
+                            max: 'Roof'
+                        },
+                        render: showRoofOnly => [
+                            renderPalette({
+                                data: mask,
+                                mask: showRoofOnly ? mask : undefined,
+                                colors: colors
+                            })
+                        ]
+                    };
+                },
+                dsm: async () => {
+                    const [mask, data] = await Promise.all([
+                        downloadGeoTIFF(urls.maskUrl),
+                        downloadGeoTIFF(urls.dsmUrl)
+                    ]);
+                    const sortedValues = Array.from(data.rasters[0]).sort((x, y) => x - y);
+                    const minValue = sortedValues[0];
+                    const maxValue = sortedValues.slice(-1)[0];
+                    const colors = rainbowPalette;
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        palette: {
+                            colors: colors,
+                            min: `${minValue.toFixed(1)} m`,
+                            max: `${maxValue.toFixed(1)} m`
+                        },
+                        render: showRoofOnly => [
+                            renderPalette({
+                                data: data,
+                                mask: showRoofOnly ? mask : undefined,
+                                colors: colors,
+                                min: sortedValues[0],
+                                max: sortedValues.slice(-1)[0]
+                            })
+                        ]
+                    };
+                },
+                rgb: async () => {
+                    const [mask, data] = await Promise.all([
+                        downloadGeoTIFF(urls.maskUrl),
+                        downloadGeoTIFF(urls.rgbUrl)
+                    ]);
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        render: showRoofOnly => [
+                            renderRGB(data, showRoofOnly ? mask : undefined)
+                        ]
+                    };
+                },
+                annualFlux: async () => {
+                    const [mask, data] = await Promise.all([
+                        downloadGeoTIFF(urls.maskUrl),
+                        downloadGeoTIFF(urls.annualFluxUrl)
+                    ]);
+                    const colors = ironPalette;
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        palette: {
+                            colors: colors,
+                            min: 'Shady',
+                            max: 'Sunny'
+                        },
+                        render: showRoofOnly => [
+                            renderPalette({
+                                data: data,
+                                mask: showRoofOnly ? mask : undefined,
+                                colors: colors,
+                                min: 0,
+                                max: 1800
+                            })
+                        ]
+                    };
+                },
+                monthlyFlux: async () => {
+                    const [mask, data] = await Promise.all([
+                        downloadGeoTIFF(urls.maskUrl),
+                        downloadGeoTIFF(urls.monthlyFluxUrl)
+                    ]);
+                    const colors = ironPalette;
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        palette: {
+                            colors: colors,
+                            min: 'Shady',
+                            max: 'Sunny'
+                        },
+                        render: showRoofOnly =>
+                            [...Array(12).keys()].map(month =>
+                                renderPalette({
+                                    data: data,
+                                    mask: showRoofOnly ? mask : undefined,
+                                    colors: colors,
+                                    min: 0,
+                                    max: 200,
+                                    index: month
+                                })
+                            )
+                    };
+                },
+                hourlyShade: async () => {
+                    const [mask, ...months] = await Promise.all([
+                        downloadGeoTIFF(urls.maskUrl),
+                        ...urls.hourlyShadeUrls.map(url => downloadGeoTIFF(url))
+                    ]);
+                    const colors = sunlightPalette;
+                    return {
+                        id: layerId,
+                        bounds: mask.bounds,
+                        palette: {
+                            colors: colors,
+                            min: 'Shade',
+                            max: 'Sun'
+                        },
+                        render: (showRoofOnly, month, day) =>
+                            [...Array(24).keys()].map(hour =>
+                                renderPalette({
+                                    data: {
+                                        ...months[month],
+                                        rasters: months[month].rasters.map(values =>
+                                            values.map(x => x & (1 << (day - 1)))
+                                        )
+                                    },
+                                    mask: showRoofOnly ? mask : undefined,
+                                    colors: colors,
+                                    min: 0,
+                                    max: 1,
+                                    index: hour
+                                })
+                            )
+                    };
+                }
+            };
+
+            try {
+                return get[layerId]();
+            } catch (e) {
+                toastr.error('No data found for this address');
+
+                console.error(`Error getting layer: ${layerId}\n`, e);
+                throw e;
+            }
+        }
+        const TRIGGER_ENDPOINT = 'https://hooks.zapier.com/hooks/catch/your_zapier_webhook_id/';
+
+    </script>
+</body>
+
+</html>
