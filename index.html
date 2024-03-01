@@ -1072,7 +1072,7 @@ https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js
 
             fixStepIndicator(n);
         }
-        function nextPrev(n) {
+        function nextPrev(n, reset) {
             // This function will figure out which tab to display
             var x = document.getElementsByClassName("step");
             // Exit the function if any field in the current tab is invalid:
@@ -1080,14 +1080,15 @@ https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js
             // Hide the current tab:
             x[currentTab].style.display = "none";
             // Increase or decrease the current tab by 1:
-            currentTab = currentTab + n;
+            currentTab = reset ? 0 : currentTab + n;
             // if you have reached the end of the form..
+            console.log(currentTab, x.length);
             if (currentTab === x.length) {
                 // ... the form gets submitted:
-                document.getElementById("signUpForm").submit();
-                showTab(0);
-                toastr.success('Form Submitted Successfully');
-                return false;
+                // document.getElementById("signUpForm").submit();
+                // nextPrev(0, reset);
+                // toastr.success('Form Submitted Successfully');
+                // return false;
             }
             // Otherwise, display the correct tab:
             showTab(currentTab);
